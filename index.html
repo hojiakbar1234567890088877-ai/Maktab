@@ -1,216 +1,369 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qo'shtepa Tuman Ixtisoslashtirilgan Maktabi - Smart System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #00d4ff;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --bg-gradient: linear-gradient(135deg, #001f3f 0%, #007bff 100%);
-        }
-        [data-gender="female"] {
-            --accent: #ff4d94;
-            --bg-gradient: linear-gradient(135deg, #2b001a 0%, #ff1a75 100%);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
-        body { background: var(--bg-gradient); background-attachment: fixed; min-height: 100vh; display: flex; justify-content: center; align-items: center; color: white; overflow-x: hidden; }
-        .hidden { display: none !important; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qo'shtepa Tuman Ixtisoslashtirilgan Maktabi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #00d4ff;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --bg-gradient: linear-gradient(135deg, #001f3f 0%, #007bff 100%);
+            --alert-bg: rgba(0, 0, 0, 0.85);
+        }
 
-        /* Glass Design */
-        .glass-panel {
-            background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border);
-            border-radius: 30px; padding: 30px; width: 95%; max-width: 1000px; text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); margin: 20px;
-        }
+        [data-gender="female"] {
+            --accent: #ff4d94;
+            --bg-gradient: linear-gradient(135deg, #2b001a 0%, #ff1a75 100%);
+        }
 
-        input, select {
-            width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.08); color: white; outline: none;
-        }
-        .btn-main {
-            background: var(--accent); color: #000; padding: 12px 30px; border: none;
-            border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;
-        }
-        .btn-main:hover { transform: scale(1.02); box-shadow: 0 0 15px var(--accent); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.4s ease; }
 
-        .role-box { display: flex; gap: 10px; margin: 15px 0; }
-        .role-option {
-            flex: 1; padding: 10px; border: 1px solid var(--glass-border); border-radius: 10px;
-            cursor: pointer; background: rgba(255,255,255,0.05); font-size: 12px;
-        }
-        .role-option.active { background: var(--accent); color: #000; }
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
 
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px; }
-        .card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); cursor: pointer; }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .card i { font-size: 30px; color: var(--accent); margin-bottom: 10px; }
+        .hidden { display: none !important; }
 
-        #custom-alert {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.9); padding: 15px 25px; border-radius: 15px;
-            border: 1px solid var(--accent); z-index: 10000; display: flex; align-items: center; gap: 10px;
-        }
-        #custom-alert.show { top: 20px; }
-    </style>
+        /* Developer Tag */
+        .dev-tag {
+            position: fixed; top: 15px; right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 8px 15px; border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            font-size: 13px; color: var(--accent);
+            z-index: 9999; letter-spacing: 1px; font-weight: 500;
+        }
+
+        /* Custom Alert */
+        #custom-alert {
+            position: fixed; top: -150px; left: 50%;
+            transform: translateX(-50%);
+            background: var(--alert-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--accent);
+            padding: 15px 30px; border-radius: 20px;
+            z-index: 100000; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #custom-alert.show { top: 30px; }
+
+        /* Splash Screen */
+        #splash {
+            position: fixed; inset: 0; background: #001529;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000;
+        }
+        .loader {
+            width: 50px; height: 50px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s infinite linear; margin: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 35px; padding: 40px;
+            width: 95%; max-width: 1100px; max-height: 90vh;
+            overflow-y: auto; text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        input, select {
+            width: 100%; padding: 15px; margin: 10px 0;
+            border-radius: 12px; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05); color: white; outline: none;
+        }
+        option { background: #111; color: white; }
+
+        .btn-main {
+            background: var(--accent); color: #000; padding: 15px 45px;
+            border: none; border-radius: 50px; font-weight: bold;
+            cursor: pointer; margin-top: 15px;
+        }
+
+        .role-box { display: flex; gap: 10px; margin: 15px 0; }
+        .role-option {
+            flex: 1; padding: 12px; border: 1px solid var(--glass-border);
+            border-radius: 10px; cursor: pointer; background: rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+        .role-option.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px; margin-top: 30px;
+        }
+        .card {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+            padding: 30px; border-radius: 25px; cursor: pointer;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-10px); background: rgba(255,255,255,0.08); }
+        .card i { font-size: 40px; color: var(--accent); margin-bottom: 15px; }
+
+        #test-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 50000; display: flex; justify-content: center; align-items: center; padding: 20px;
+        }
+        .test-content {
+            background: #111; width: 100%; max-width: 800px; max-height: 85vh;
+            overflow-y: auto; padding: 35px; border-radius: 25px; border: 1px solid var(--accent);
+        }
+    </style>
 </head>
 <body>
 
-    <div id="custom-alert">
-        <i class="fas fa-bell"></i> <span id="alert-text"></span>
-    </div>
+    <div class="dev-tag">Dasturchi: Muhammadiyev Hojiakbar</div>
 
-    <div class="glass-panel" id="app-container">
-        
-        <div id="login-screen">
-            <h2 style="margin-bottom: 20px;">Tizimga <span style="color: var(--accent);">Kirish</span></h2>
-            
-            <div class="role-box">
-                <div class="role-option active" onclick="setRole('student', this)">O'quvchi</div>
-                <div class="role-option" onclick="setRole('teacher', this)">O'qituvchi</div>
-            </div>
+    <div id="custom-alert">
+        <i class="fas fa-info-circle"></i>
+        <span id="alert-text"></span>
+        <button onclick="closeAlert()" style="background:var(--accent); border:none; padding:5px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
+    </div>
 
-            <div style="max-width: 400px; margin: 0 auto;">
-                <input type="text" id="user-surname" placeholder="Familiyangiz">
-                <input type="text" id="user-firstname" placeholder="Ismingiz" oninput="detectGender()">
-                
-                <div id="student-fields">
-                    <select id="user-grade">
-                        <option value="">Sinfni tanlang</option>
-                        <script>
-                            const grades = ["5a", "5b", "6a", "6b", "7a", "7b", "8a", "8b", "9a", "9b", "10a", "10b", "11a", "11b"];
-                            grades.forEach(g => document.write(`<option value="${g}">${g}-sinf</option>`));
-                        </script>
-                    </select>
-                </div>
+    <div id="splash">
+        <h2 style="text-align: center; padding: 20px;">Ixtisoslashtirilgan Ta`lim Muassasalari Agentligi Tizimidagi <br> 
+        <span style="color: var(--accent);">Qo`shtepa Tuman Ixtisoslashtirilgan Maktabi</span></h2>
+        <div class="loader"></div>
+    </div>
 
-                <div id="teacher-fields" class="hidden">
-                    <select id="user-subject">
-                        <option value="">Faningizni tanlang</option>
-                        <option value="Matematika">Matematika</option>
-                        <option value="Ingliz tili">Ingliz tili</option>
-                        <option value="Ona tili">Ona tili</option>
-                        <option value="Fizika">Fizika</option>
-                        <option value="IT">Informatika</option>
-                    </select>
-                </div>
+    <div class="glass-panel hidden" id="app-container">
+        
+        <div id="login-screen">
+            <h2 style="margin-bottom: 15px;">Tizimga <span style="color: var(--accent);">Kirish</span></h2>
+            <div style="max-width: 400px; margin: 0 auto;">
+                <input type="text" id="user-fullname" placeholder="Ism va Familiya" oninput="detectGender()">
+                
+                <div class="role-box">
+                    <div class="role-option active" onclick="setRole('student', this)">O'quvchi</div>
+                    <div class="role-option" onclick="setRole('teacher', this)">O'qituvchi</div>
+                    <div class="role-option" onclick="setRole('guest', this)">Mehmon</div>
+                </div>
 
-                <input type="password" id="user-password" placeholder="Parolingizni kiriting">
-                
-                <button class="btn-main" onclick="handleLogin()">TIZIMGA KIRISH</button>
-                <button id="get-pass-btn" class="btn-main" style="background:none; border:1px solid var(--accent); color:white; font-size:12px;" onclick="generatePassword()">PAROL OLISH</button>
-            </div>
-        </div>
+                <div id="code-area">
+                    <input type="password" id="access-code" placeholder="Kodi (1123)">
+                    
+                    <select id="user-grade">
+                        <option value="">Sinfni tanlang</option>
+                        <script>
+                            const grades = ["5a", "5", "6a", "6b", "7a", "7b", "7-d", "8a", "8b", "8d", "9a", "9b", "9d", "10a", "10b", "10d", "11a", "11b", "11d"];
+                            grades.forEach(g => document.write(`<option value="${g}">${g}-sinf</option>`));
+                        </script>
+                    </select>
 
-        <div id="dashboard" class="hidden">
-            <h2 id="greet-name">Xush kelibsiz!</h2>
-            <p id="greet-sub" style="opacity: 0.7; margin-bottom: 20px;"></p>
-            
-            <div class="menu-grid">
-                <div class="card" onclick="showAttendance()">
-                    <i class="fas fa-user-clock"></i>
-                    <h3>Davomat / Kechikish</h3>
-                </div>
-                <div class="card" onclick="myAlert('Yaqinda yangi testlar yuklanadi')">
-                    <i class="fas fa-book-open"></i>
-                    <h3>O'quv materiallari</h3>
-                </div>
-                <div class="card" onclick="location.reload()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <h3>Chiqish</h3>
-                </div>
-            </div>
-        </div>
+                    <select id="user-subject" class="hidden">
+                        <option value="">Faningizni tanlang</option>
+                        <option value="Ingliz tili">Ingliz tili</option>
+                        <option value="Matematika">Matematika</option>
+                        <option value="Tarix">Tarix</option>
+                        <option value="Psixolog">Psixolog</option>
+                        <option value="Rus tili">Rus tili</option>
+                        <option value="Ona tili">Ona tili</option>
+                        <option value="Biologiya">Biologiya</option>
+                        <option value="Kimyo">Kimyo</option>
+                        <option value="Fizika">Fizika</option>
+                    </select>
+                </div>
+                <button class="btn-main" onclick="handleLogin()">TIZIMGA KIRISH</button>
+            </div>
+        </div>
 
-        <div id="attendance-modal" class="hidden" style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 20px;">
-            <h3 style="color: var(--accent); margin-bottom: 15px;">Mening kechikishlarim</h3>
-            <div id="attendance-list">
-                <p>Hozircha ma'lumot yo'q. (Admin tomonidan rasm yuklanishi kutilmoqda)</p>
-            </div>
-            <button class="btn-main" style="width: auto;" onclick="closeAttendance()">Yopish</button>
-        </div>
+        <div id="dashboard" class="hidden">
+            <h2 id="greet-title">Salom!</h2>
+            <p id="greet-sub" style="margin-bottom: 30px; font-weight: bold; opacity: 0.8;"></p>
+            
+            <div class="menu-grid">
+                <div class="card" onclick="myAlert('Maktabimiz eng zamonaviy o`quv uslublariga ega.')">
+                    <i class="fas fa-school"></i>
+                    <h3>Maktabimiz haqida</h3>
+                </div>
+                <div class="card" onclick="myAlert('O`quvchilarimiz xalqaro olimpiadalar g`olibi!')">
+                    <i class="fas fa-award"></i>
+                    <h3>Yutuqlarimiz</h3>
+                </div>
+                <div class="card" onclick="myAlert('5-sinf: 48 ta, 7-sinf: 24 ta kvota.')">
+                    <i class="fas fa-users"></i>
+                    <h3>Kvotalar</h3>
+                </div>
+                <div class="card" onclick="window.open('https://portal.piima.uz/page/qabul-imtihon-materiallari-spesifikatsiyasi')">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Spetsifikatsiyalar</h3>
+                </div>
+                <div class="card" id="exam-card" onclick="startExam()">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Imtihonga tayyorlanish</h3>
+                </div>
+                <div class="card" onclick="myAlert('Manzil: Qo`shtepa tumani, Beshkapa MFY')">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Manzil</h3>
+                </div>
+                <div class="card" onclick="myAlert('Admin: @Sobirov_96 va @Mr_Holdennn')">
+                    <i class="fas fa-headset"></i>
+                    <h3>Support</h3>
+                </div>
+            </div>
+            <p style="margin-top: 40px; font-style: italic; opacity: 0.6;">"Hozir olingan bilim kelajagingiz kalitidir."</p>
+        </div>
+    </div>
 
-    </div>
+    <div id="test-modal" class="hidden">
+        <div class="test-content">
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--accent); padding-bottom:10px; margin-bottom:20px;">
+                <h3 style="color:var(--accent);">Grade 5 English Exam</h3>
+                <h3 id="timer">30:00</h3>
+            </div>
+            <div id="quiz-container"></div>
+            <button class="btn-main" onclick="submitExam()" style="width: 100%;">NATIJANI YUBORISH</button>
+        </div>
+    </div>
 
-    <script>
-        // 1. TELEGRAM SOZLAMALARI (O'zingiznikini yozing)
-        const BOT_TOKEN = "7709841804:AAEj3B26fB_m_Y7hP5Ew6WwQ3ZlX0X0X0X0"; // BOTFATHERDAN OLGAN TOKEN
-        const CHAT_ID = "6348123456"; // @userinfobot orqali olingan ID
-        
-        let currentRole = 'student';
+    <script>
+        let currentRole = 'student';
 
-        function myAlert(msg) {
-            const alertBox = document.getElementById('custom-alert');
-            document.getElementById('alert-text').innerText = msg;
-            alertBox.classList.add('show');
-            setTimeout(() => alertBox.classList.remove('show'), 3000);
-        }
+        setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('app-container').classList.remove('hidden');
+        }, 3000);
 
-        function setRole(role, el) {
-            currentRole = role;
-            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('active'));
-            el.classList.add('active');
-            
-            document.getElementById('student-fields').classList.toggle('hidden', role !== 'student');
-            document.getElementById('teacher-fields').classList.toggle('hidden', role !== 'teacher');
-            document.getElementById('get-pass-btn').innerText = role === 'student' ? 'PAROL OLISH (O\'QUVCHI)' : 'PAROL OLISH (O\'QITUVCHI)';
-        }
+        function myAlert(msg) {
+            document.getElementById('alert-text').innerText = msg;
+            document.getElementById('custom-alert').classList.add('show');
+            setTimeout(closeAlert, 4000);
+        }
+        function closeAlert() { document.getElementById('custom-alert').classList.remove('show'); }
 
-        function detectGender() {
-            const name = document.getElementById('user-firstname').value.toLowerCase();
-            if (name.endsWith('eva') || name.endsWith('ova') || name.endsWith('qizi')) {
-                document.body.setAttribute('data-gender', 'female');
-            } else { document.body.removeAttribute('data-gender'); }
-        }
+        function detectGender() {
+            const name = document.getElementById('user-fullname').value.toLowerCase();
+            if (name.endsWith('eva') || name.endsWith('ova') || name.endsWith('qizi')) {
+                document.body.setAttribute('data-gender', 'female');
+            } else { document.body.removeAttribute('data-gender'); }
+        }
 
-        // PAROL GENERATSIYA VA ADMINGA YUBORISH
-        async function generatePassword() {
-            const surname = document.getElementById('user-surname').value;
-            const name = document.getElementById('user-firstname').value;
-            const info = currentRole === 'student' ? document.getElementById('user-grade').value : document.getElementById('user-subject').value;
+        function setRole(role, el) {
+            currentRole = role;
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            
+            const codeInput = document.getElementById('access-code');
+            const gradeSelect = document.getElementById('user-grade');
+            const subjectSelect = document.getElementById('user-subject');
+            
+            if (role === 'guest') {
+                codeInput.classList.add('hidden');
+                gradeSelect.classList.add('hidden');
+                subjectSelect.classList.add('hidden');
+            } else if (role === 'teacher') {
+                codeInput.classList.remove('hidden');
+                gradeSelect.classList.add('hidden'); // Sinfni yashirish
+                subjectSelect.classList.remove('hidden'); // Fanni ko'rsatish
+                codeInput.placeholder = "Kodi: 2345";
+            } else {
+                codeInput.classList.remove('hidden');
+                gradeSelect.classList.remove('hidden'); // Sinfni ko'rsatish
+                subjectSelect.classList.add('hidden'); // Fanni yashirish
+                codeInput.placeholder = "Kodi: 1123";
+            }
+        }
 
-            if (!surname || !name || !info) {
-                myAlert("Iltimos, hamma joyni to'ldiring!");
-                return;
-            }
+        function handleLogin() {
+            const name = document.getElementById('user-fullname').value;
+            const code = document.getElementById('access-code').value;
+            const grade = document.getElementById('user-grade').value;
+            const subject = document.getElementById('user-subject').value;
 
-            const pass = surname.substring(0,2).toUpperCase() + Math.floor(1000 + Math.random() * 8999);
-            myAlert("Parolingiz: " + pass);
-            document.getElementById('user-password').value = pass;
+            if (!name) { myAlert("Ism-familiyangizni kiriting!"); return; }
 
-            // Telegramga yuborish
-            const text = `🚀 YANGI FOYDALANUVCHI:\n👤: ${surname} ${name}\n🎭: ${currentRole.toUpperCase()}\n📍: ${info}\n🔑: ${pass}`;
-            await fetch(`https://api.telegram.org/bot${8593520889:AAEs2TrS8jbfwJjyTAccIcTXQfpPXKBvd14}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`);
-        }
+            if (currentRole === 'student') {
+                if (code !== '1123') { myAlert("Kodi noto'g'ri (1123)!"); return; }
+                if (!grade) { myAlert("Sinfni tanlang!"); return; }
+                showDashboard(name, grade + "-sinf o'quvchisi", "O'quvchi");
+            } else if (currentRole === 'teacher') {
+                if (code !== '2345') { myAlert("O'qituvchi kodi noto'g'ri (2345)!"); return; }
+                if (!subject) { myAlert("Faningizni tanlang!"); return; }
+                showDashboard(name, subject + " o'qituvchisi", "Ustoz");
+            } else {
+                showDashboard(name, "Mehmon", "Tashrif buyuruvchi");
+            }
+        }
 
-        function handleLogin() {
-            const surname = document.getElementById('user-surname').value;
-            const name = document.getElementById('user-firstname').value;
-            const pass = document.getElementById('user-password').value;
+        function showDashboard(name, sub, roleTitle) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('greet-title').innerHTML = `XUSH KELIBSIZ, <span style="color:var(--accent)">${name.toUpperCase()}!</span>`;
+            document.getElementById('greet-sub').innerText = `${sub} | ${roleTitle}`;
+            if (currentRole === 'guest') {
+                document.getElementById('exam-card').style.opacity = '0.4';
+                document.getElementById('exam-card').style.pointerEvents = 'none';
+            }
+        }
 
-            if (!surname || !name || !pass) {
-                myAlert("Login yoki parol xato!");
-                return;
-            }
+        // Test Logic
+        const questions = [
+            { q: "Choose synonym for 'Big':", a: ["Small", "Large", "Thin", "Fast", "Cold"], c: 1 },
+            { q: "Choose antonym for 'Cheap':", a: ["Easy", "Expensive", "New", "Old", "Heavy"], c: 1 },
+            { q: "Uncountable noun:", a: ["Apple", "Water", "Book", "Student", "Chair"], c: 1 },
+            { q: "Replace 'Sarah':", a: ["He", "It", "We", "She", "They"], c: 3 },
+            { q: "My brother is _______ than me.", a: ["tall", "taller", "tallest", "the tallest", "more tall"], c: 1 },
+            { q: "This is my _______ bag.", a: ["sisters", "sister's", "sisters's", "sister", "of sister"], c: 1 },
+            { q: "I usually _______ my homework.", a: ["does", "doing", "do", "did", "am doing"], c: 2 },
+            { q: "Children _______ in the garden right now.", a: ["play", "plays", "are playing", "played", "is playing"], c: 2 },
+            { q: "We _______ to the zoo last Sunday.", a: ["go", "goes", "going", "went", "gone"], c: 3 },
+            { q: "The book is _______ the table.", a: ["in", "on", "at", "under", "between"], c: 1 },
+            { q: "I am free _______ 5 o'clock.", a: ["on", "in", "at", "for", "to"], c: 2 },
+            { q: "I like apples _______ I don't like bananas.", a: ["and", "because", "so", "but", "or"], c: 3 },
+            { q: "Order: (English / speak / I / can)", a: ["English I can speak.", "I can speak English.", "Can I English speak.", "I English can speak.", "Speak I can English."], c: 1 },
+            { q: "Main idea of 'Tom and Rex' story?", a: ["Anna's hobby", "How to wash dog", "Tom and Anna's pets", "Buying ball", "Playing"], c: 2 },
+            { q: "Rex vs Kitty difference:", a: ["Rex big, Kitty small", "Rex likes park, Kitty home", "Tom owns both", "Rex likes cats", "Kitty is dog"], c: 1 }
+        ];
 
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('greet-name').innerText = `SALOM, ${name.toUpperCase()}!`;
-            document.getElementById('greet-sub').innerText = `${currentRole === 'student' ? 'O\'quvchi' : 'O\'qituvchi'} | Tizim faol`;
-        }
+        let timerId, timeLeft = 1800;
 
-        function showAttendance() {
-            document.getElementById('attendance-modal').classList.remove('hidden');
-            // Bu yerda kelajakda rasmlarni ko'rsatish mantiqi bo'ladi
-        }
+        function startExam() {
+            document.getElementById('test-modal').classList.remove('hidden');
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `<div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin-bottom:20px;">
+                <strong>Reading:</strong> Tom has a small dog Rex. They go to the park. Anna has a cat Kitty who prefers the sofa.</div>`;
+            
+            questions.forEach((q, i) => {
+                let opts = q.a.map((opt, oi) => `<label style="display:block; margin:8px 0; cursor:pointer;"><input type="radio" name="q${i}" value="${oi}"> ${opt}</label>`).join('');
+                container.innerHTML += `<div style="margin-bottom:20px; text-align:left;"><strong>${i+1}. ${q.q}</strong>${opts}</div>`;
+            });
 
-        function closeAttendance() {
-            document.getElementById('attendance-modal').classList.add('hidden');
-        }
-    </script>
+            timerId = setInterval(() => {
+                timeLeft--;
+                let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if(timeLeft <= 0) submitExam();
+            }, 1000);
+        }
+
+        function submitExam() {
+            clearInterval(timerId);
+            let score = 0;
+            questions.forEach((q, i) => {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                const w = i < 6 ? 1.5 : 2.1;
+                if(sel && parseInt(sel.value) === q.c) score += w;
+            });
+            myAlert(`Natija: ${score.toFixed(1)} / 27.9 ball`);
+            document.getElementById('test-modal').classList.add('hidden');
+            timeLeft = 1800;
+        }
+    </script>
 </body>
 </html>
+ushbu kodni korib chiq va menda yan idealar bor va unga rasmlar qoymoqchiman
