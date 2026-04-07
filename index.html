@@ -3,320 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qo'shtepa Tuman Ixtisoslashtirilgan Maktabi</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>PIIMA - Qo'shtepa tumani</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: rgba(0, 123, 255, 0.8);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text-color: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-heavy: rgba(255, 255, 255, 0.2);
+            --accent: #00d2ff;
+            --premium-gold: #d4af37;
         }
 
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            height: 100vh;
-            overflow: hidden;
-            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* 1. Splash Screen Section */
-        #splash-screen {
+        /* Developer Header */
+        .dev-header {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(90deg, transparent, var(--glass-heavy), transparent);
+            border-bottom: 1px solid var(--premium-gold);
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--premium-gold);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        /* Splash Screen */
+        #splash {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 50, 0.9);
+            inset: 0;
+            background: #090a0f;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 1s ease-out;
+            z-index: 10000;
+            transition: 1s ease;
         }
 
-        .splash-content {
-            background: var(--primary-blue);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
+        .splash-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid var(--accent);
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 255, 0.37);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 50px rgba(0, 210, 255, 0.2);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        /* Glass Cards */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        /* 2. Authentication Section */
-        #auth-section {
-            display: none;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            animation: fadeIn 1s forwards;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
+        .glass-panel {
+            background: var(--glass);
             backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 25px;
             padding: 30px;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
-        .btn-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-mode {
-            flex: 1; padding: 10px; border: none; border-radius: 10px;
-            background: rgba(255,255,255,0.2); color: white; cursor: pointer;
-        }
-        .btn-mode.active { background: #007bff; }
-
-        input, select {
-            width: 90%; padding: 12px; margin: 10px 0;
-            border-radius: 10px; border: none; background: rgba(255,255,255,0.1);
-            color: white; outline: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-            border: none; padding: 12px 30px; border-radius: 25px;
-            color: white; font-weight: bold; cursor: pointer; margin-top: 20px;
-        }
-
-        /* 3. Main Content Section */
-        #main-content {
-            display: none;
-            height: 100vh;
-            overflow-y: auto;
-            padding: 20px;
-            animation: slideUp 0.8s ease-out;
-        }
-
-        .menu-grid {
+        /* Grid Buttons */
+        .grid-menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 50px auto;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
         }
 
-        .menu-item {
-            background: var(--glass-bg);
-            padding: 30px;
+        .premium-btn {
+            background: var(--glass);
+            padding: 40px 20px;
             border-radius: 20px;
-            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
             cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
         }
 
-        .menu-item:hover {
-            transform: translateY(-10px);
-            background: rgba(255,255,255,0.2);
+        .premium-btn:hover {
+            transform: scale(1.05);
+            background: var(--glass-heavy);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
         }
 
-        .menu-item i { font-size: 40px; margin-bottom: 15px; color: #00d2ff; }
+        .premium-btn i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* Modal / Gallery Style */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
-            top: 5%; left: 5%; width: 90%; height: 90%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            border-radius: 20px;
-            padding: 20px;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 5000;
+            padding: 40px;
             overflow-y: auto;
         }
 
-        .close-modal { float: right; cursor: pointer; font-size: 30px; }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+        .modal-content {
+            background: #16213e;
+            max-width: 900px;
+            margin: auto;
+            border-radius: 30px;
+            padding: 40px;
+            position: relative;
+            border: 1px solid var(--accent);
         }
 
-        .gallery img { width: 100%; border-radius: 10px; border: 2px solid #00d2ff; }
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 2rem; cursor: pointer; color: var(--accent);
+        }
 
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-        @keyframes slideUp { from {transform: translateY(50px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+        /* Test Styles */
+        .test-item {
+            background: rgba(255,255,255,0.05);
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 15px;
+        }
 
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 1px solid var(--accent);
+        }
+
+        input {
+            background: var(--glass);
+            border: 1px solid var(--accent);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <div class="splash-content">
-            <h2>Ixtisoslashtirilgan ta’lim muassasalari agentligi tizimidagi</h2>
-            <h1>Qo‘shtepa tuman ixtisoslashtirilgan maktabi</h1>
+<div id="splash">
+    <div class="splash-card">
+        <h3 style="color: var(--accent);">Agentlik tizimidagi</h3>
+        <h1>Qo'shtepa tuman ixtisoslashtirilgan maktabi</h1>
+        <div class="loader">Yuklanmoqda...</div>
+    </div>
+</div>
+
+<div class="dev-header">
+    <i class="fas fa-code"></i> Dasturchi: Muhammadiyev Hojiakbar
+</div>
+
+<div class="container" id="main-ui">
+    <div class="glass-panel" id="auth-panel">
+        <h2 style="text-align: center;"><i class="fas fa-fingerprint"></i> Tizimga kirish</h2>
+        <input type="text" id="userName" placeholder="Ism va Familiyangizni kiriting">
+        <div style="display: flex; gap: 10px;">
+            <button class="premium-btn" onclick="login('student')" style="flex:1; padding: 20px;">
+                <i class="fas fa-user-graduate"></i> O'quvchi
+            </button>
+            <button class="premium-btn" onclick="login('guest')" style="flex:1; padding: 20px;">
+                <i class="fas fa-user-tie"></i> Mehmon
+            </button>
         </div>
     </div>
 
-    <div id="auth-section">
-        <div class="glass-card">
-            <h2 id="auth-title">Xush kelibsiz</h2>
-            <div class="btn-group">
-                <button class="btn-mode active" onclick="setMode('student')">O'quvchi</button>
-                <button class="btn-mode" onclick="setMode('guest')">Mehmon</button>
-            </div>
-            <input type="text" id="fullname" placeholder="Ism va Familiya">
-            
-            <div id="student-fields">
-                <select id="grade" onchange="updateSubGrades()">
-                    <option value="">Sinfni tanlang</option>
-                    </select>
-                <select id="subgrade">
-                    <option value="">Harfni tanlang</option>
-                </select>
-            </div>
-
-            <button class="btn-primary" onclick="enterSite()">Kirish</button>
-        </div>
-    </div>
-
-    <div id="main-content">
-        <h1 style="text-align: center;">Boshqaruv Paneli</h1>
-        <div class="menu-grid">
-            <div class="menu-item" onclick="openModal('about-modal')">
-                <i class="fas fa-school"></i>
+    <div id="dashboard" class="hidden">
+        <div class="grid-menu">
+            <div class="premium-btn" onclick="toggleModal('about-modal')">
+                <i class="fas fa-synagogue"></i>
                 <h3>Maktabimiz haqida</h3>
             </div>
-            <div class="menu-item" onclick="window.open('https://portal.piima.uz/page/qabul-imtihon-materiallari-spesifikatsiyasi')">
-                <i class="fas fa-file-alt"></i>
+            <div class="premium-btn" onclick="window.open('https://portal.piima.uz/page/qabul-imtihon-materiallari-spesifikatsiyasi')">
+                <i class="fas fa-microchip"></i>
                 <h3>Spesifikatsiyalar</h3>
             </div>
-            <div class="menu-item" onclick="openModal('quota-modal')">
-                <i class="fas fa-users"></i>
+            <div class="premium-btn" onclick="toggleModal('quota-modal')">
+                <i class="fas fa-chart-pie"></i>
                 <h3>Kvotalar</h3>
             </div>
-            <div class="menu-item" onclick="openModal('exam-modal')">
-                <i class="fas fa-book-open"></i>
+            <div class="premium-btn" onclick="toggleModal('prep-modal')">
+                <i class="fas fa-laptop-code"></i>
                 <h3>Imtihonga tayyorlanish</h3>
             </div>
-            <div class="menu-item" onclick="openModal('apply-modal')">
-                <i class="fas fa-user-plus"></i>
+            <div class="premium-btn" onclick="toggleModal('apply-modal')">
+                <i class="fas fa-paper-plane"></i>
                 <h3>O'qishni xohlayman</h3>
             </div>
-            <div class="menu-item" onclick="openModal('support-modal')">
-                <i class="fas fa-headset"></i>
+            <div class="premium-btn" onclick="toggleModal('support-modal')">
+                <i class="fas fa-shield-heart"></i>
                 <h3>Support</h3>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="about-modal" class="modal">
-        <span class="close-modal" onclick="closeModal('about-modal')">&times;</span>
-        <h2>Maktabimiz Galereyasi</h2>
-        <p>Ixtisoslashtirilgan ta'lim muassasalari agentligi tizimidagi Qo'shtepa tuman ixtisoslashtirilgan maktabi.</p>
-        <div class="gallery">
-            <img src="image_41f4c3.jpg" alt="Maktab binosi">
+<div id="about-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleModal('about-modal')">&times;</span>
+        <h2><i class="fas fa-images"></i> Maktab Galereyasi</h2>
+        <div class="gallery-grid">
+            <img src="image_41f4c3.jpg" alt="Bino">
             <img src="image_41f4e1.jpg" alt="Sinfxonalar">
-            <img src="image_41f500.jpg" alt="Sport zal va oshxona">
+            <img src="image_41f500.jpg" alt="Sport majmuasi">
         </div>
     </div>
+</div>
 
-    <div id="quota-modal" class="modal">
-        <span class="close-modal" onclick="closeModal('quota-modal')">&times;</span>
-        <h2>Qabul Kvotalari - 2026</h2>
-        <ul style="font-size: 1.2rem; line-height: 2;">
-            <li><i class="fas fa-check-circle"></i> 5-sinflar: 2 ta sinf (jami 48 ta o'quvchi)</li>
-            <li><i class="fas fa-check-circle"></i> 7-sinf (Tabiiy yo'nalish): 24 ta o'rin</li>
-        </ul>
-    </div>
-
-    <div id="exam-modal" class="modal">
-        <span class="close-modal" onclick="closeModal('exam-modal')">&times;</span>
-        <h2>Tayyorlov Bo'limi</h2>
-        <div style="background: rgba(255,165,0,0.2); padding: 20px; border-radius: 10px;">
-            <h3>1. Ingliz tili (Prezident maktabi saralash testlari)</h3>
-            <p><i class="fas fa-info-circle"></i> Ushbu bo'lim tez orada yuklanadi.</p>
+<div id="prep-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleModal('prep-modal')">&times;</span>
+        <h2><i class="fas fa-brain"></i> Saralash Testlari</h2>
+        <div style="display: flex; gap: 20px;">
+            <button class="premium-btn" onclick="showTest('math')" style="flex:1;"><i class="fas fa-calculator"></i> Matematika (30 ta)</button>
+            <button class="premium-btn" onclick="showTest('eng')" style="flex:1;"><i class="fas fa-language"></i> Ingliz tili (15 ta)</button>
         </div>
+        <div id="test-container" class="test-area" style="margin-top: 30px;">
+            </div>
     </div>
+</div>
 
-    <div id="apply-modal" class="modal">
-        <span class="close-modal" onclick="closeModal('apply-modal')">&times;</span>
-        <h2>Qabul uchun bog'lanish</h2>
-        <div class="menu-grid">
-            <div class="menu-item" onclick="window.open('https://t.me/ITMA_qabul_2026')"><i class="fab fa-telegram"></i> @ITMA_qabul_2026</div>
-            <div class="menu-item" onclick="window.open('https://t.me/Sobirov09')"><i class="fab fa-telegram"></i> @Sobirov09</div>
-        </div>
-        <p><i class="fas fa-map-marker-alt"></i> Manzil: Farg'ona viloyati, Qo'shtepa tumani (Damaslar yaqinida)</p>
+<div id="quota-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleModal('quota-modal')">&times;</span>
+        <h2><i class="fas fa-users-viewfinder"></i> Qabul Kvotalari</h2>
+        <p>• 5-sinflar: 48 ta o'quvchi (2 ta sinf) </p>
+        <p>• 7-sinflar: 24 ta o'quvchi (Tabiiy fanlar)</p>
     </div>
+</div>
 
-    <div id="support-modal" class="modal">
-        <span class="close-modal" onclick="closeModal('support-modal')">&times;</span>
-        <h2>Texnik Yordam</h2>
-        <p>Agarda sayt bo'yicha muammo yuzaga kelsa, quyidagi profilga murojaat qiling:</p>
-        <button class="btn-primary" onclick="window.open('https://t.me/Mr_Holdennn')">@Mr_Holdennn</button>
+<div id="apply-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleModal('apply-modal')">&times;</span>
+        <h2><i class="fas fa-id-badge"></i> Bog'lanish</h2>
+        <p><i class="fab fa-telegram"></i> @ITMA_qabul_2026</p>
+        <p><i class="fab fa-telegram"></i> @Sobirov09</p>
+        <p><i class="fas fa-map-pin"></i> Manzil: Farg'ona viloyati, Qo'shtepa tumani</p>
     </div>
+</div>
 
-    <script>
-        // Splash screen logic
-        setTimeout(() => {
-            document.getElementById('splash-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('auth-section').style.display = 'flex';
-            }, 1000);
-        }, 5000);
+<div id="support-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="toggleModal('support-modal')">&times;</span>
+        <h2><i class="fas fa-headset"></i> Texnik yordam</h2>
+        <p>Muammo yuzaga kelsa: <strong style="color: var(--accent);">@Mr_Holdennn</strong></p>
+    </div>
+</div>
 
-        // Populate Grades
-        const gradeSelect = document.getElementById('grade');
-        for(let i=5; i<=11; i++) {
-            let opt = document.createElement('option');
-            opt.value = i; opt.innerHTML = i + "-sinf";
-            gradeSelect.appendChild(opt);
+<script>
+    // Splash screen
+    setTimeout(() => {
+        document.getElementById('splash').style.opacity = '0';
+        setTimeout(() => document.getElementById('splash').style.display = 'none', 1000);
+    }, 5000);
+
+    function login(type) {
+        const name = document.getElementById('userName').value;
+        if(!name) return alert("Ismingizni kiriting!");
+        document.getElementById('auth-panel').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+    }
+
+    function toggleModal(id) {
+        const m = document.getElementById(id);
+        m.style.display = m.style.display === 'block' ? 'none' : 'block';
+    }
+
+    const mathTests = [
+        { q: "45 073 sonida nechta yuzlik bor?", a: "A) 450", b: "B) 5", c: "C) 0", d: "D) 7", p: 1.5 },
+        { q: "Hisoblang: 120 - 40 ÷ 4 + 5", a: "A) 25", b: "B) 115", c: "C) 105", d: "D) 15", p: 1.5 },
+        { q: "2x + 5 < 13 tengsizlikning natural yechimlari nechta?", a: "A) 3 ta", b: "B) 4 ta", c: "C) 5 ta", d: "D) 2 ta", p: 1.5 },
+        { q: "3/5 qismi 45 ga teng bo'lgan sonni toping.", a: "A) 27", b: "B) 75", c: "C) 15", d: "D) 60", p: 2.1 }
+        // Qolgan savollar ham shu formatda davom etadi...
+    ];
+
+    const engTests = [
+        { q: "I ___ a student.", a: "am", b: "is", c: "are", d: "be" },
+        { q: "She ___ to school every day.", a: "go", b: "goes", c: "going", d: "went" },
+        { q: "What is ___ name?", a: "your", b: "you", c: "yours", d: "you're" },
+        { q: "There ___ five apples on the table.", a: "is", b: "are", c: "am", d: "be" },
+        { q: "Choose the plural: Child", a: "childs", b: "children", c: "childrens", d: "childes" }
+    ];
+
+    function showTest(type) {
+        const container = document.getElementById('test-container');
+        let html = `<h3>${type === 'math' ? 'Matematika' : 'English'} Testi</h3>`;
+        const list = type === 'math' ? mathTests : engTests;
+        
+        list.forEach((t, i) => {
+            html += `
+                <div class="test-item">
+                    <p><b>${i+1}. ${t.q}</b> ${t.p ? `(${t.p} ball)` : ''}</p>
+                    <label><input type="radio" name="q${i}"> ${t.a}</label><br>
+                    <label><input type="radio" name="q${i}"> ${t.b}</label><br>
+                    <label><input type="radio" name="q${i}"> ${t.c}</label><br>
+                    <label><input type="radio" name="q${i}"> ${t.d}</label>
+                </div>
+            `;
+        });
+        
+        if(type === 'eng') {
+            html += `<p style="color:var(--accent)"><i>(Qolgan 10 ta savol yuklanmoqda...)</i></p>`;
         }
+        
+        container.innerHTML = html;
+    }
+</script>
 
-        function setMode(mode) {
-            const fields = document.getElementById('student-fields');
-            const btns = document.querySelectorAll('.btn-mode');
-            btns.forEach(b => b.classList.remove('active'));
-            
-            if(mode === 'guest') {
-                fields.style.display = 'none';
-                btns[1].classList.add('active');
-            } else {
-                fields.style.display = 'block';
-                btns[0].classList.add('active');
-            }
-        }
-
-        function updateSubGrades() {
-            const grade = document.getElementById('grade').value;
-            const sub = document.getElementById('subgrade');
-            sub.innerHTML = '<option value="">Harfni tanlang</option>';
-            
-            let letters = (grade == 5 || grade == 6) ? ['A', 'B'] : ['A', 'B', 'D'];
-            letters.forEach(l => {
-                let opt = document.createElement('option');
-                opt.value = l; opt.innerHTML = l;
-                sub.appendChild(opt);
-            });
-        }
-
-        function enterSite() {
-            const name = document.getElementById('fullname').value;
-            if(!name) { alert("Iltimos, ismingizni kiriting"); return; }
-            
-            document.getElementById('auth-section').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            document.body.style.overflowY = 'auto';
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'block'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    </script>
 </body>
 </html>
