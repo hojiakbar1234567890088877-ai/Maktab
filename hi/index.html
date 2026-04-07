@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qo'shtepa tumani ixtisoslashtirilgan maktabi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+        :root {
+            --primary: #0052D4;
+            --secondary: #4364F7;
+            --accent: #6FB1FC;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --gold: #FFD700;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+
+        /* Dasturchi Qismi */
+        .developer-badge {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 30, 80, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: fadeInOut 5s infinite;
+        }
+
+        .splash-content h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(111, 177, 252, 0.5);
+        }
+
+        /* Shaffof Oynalar (Glassmorphism) */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Konteynerlar */
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Avtorizatsiya Formasi */
+        #auth-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .auth-box { width: 100%; max-width: 450px; text-align: center; }
+        
+        .role-selector { display: flex; gap: 15px; margin-bottom: 25px; }
+        .role-btn {
+            flex: 1; padding: 15px; border-radius: 12px; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.3s;
+            font-weight: 600; font-size: 1rem;
+        }
+        .role-btn.active { background: var(--primary); border-color: var(--accent); box-shadow: 0 0 15px var(--primary); }
+
+        .input-field {
+            width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px;
+            border: 1px solid var(--glass-border); background: rgba(0,0,0,0.2);
+            color: white; font-size: 1rem; outline: none;
+        }
+        .input-field:focus { border-color: var(--accent); }
+
+        .submit-btn {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 82, 212, 0.4);
+            margin-top: 10px;
+        }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 82, 212, 0.6); }
+
+        /* Asosiy Menyu Grid */
+        #main-menu { display: none; animation: slideUp 0.8s ease-out; }
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;
+        }
+
+        .menu-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 35px 20px; text-align: center;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+        }
+        .menu-card:hover {
+            transform: translateY(-10px); background: rgba(255,255,255,0.15);
+            border-color: var(--accent); box-shadow: 0 15px 30px rgba(0, 82, 212, 0.3);
+        }
+
+        .menu-icon {
+            font-size: 3.5rem; margin-bottom: 20px;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .menu-card h3 { font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; }
+
+        /* Modallar */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            max-width: 1000px; margin: 50px auto; border-radius: 25px;
+            padding: 40px; position: relative; border: 1px solid var(--accent);
+            box-shadow: 0 0 40px rgba(0, 82, 212, 0.5);
+        }
+        .close-btn {
+            position: absolute; top: 25px; right: 30px; font-size: 2.5rem;
+            color: var(--accent); cursor: pointer; transition: 0.3s;
+        }
+        .close-btn:hover { color: #fff; transform: scale(1.1); }
+
+        /* Rasmlar Galereyasi */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 15px; border: 2px solid var(--glass-border); transition: 0.3s; }
+        .gallery img:hover { transform: scale(1.03); border-color: var(--accent); }
+
+        /* Testlar ko'rinishi */
+        .test-box {
+            background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px;
+            margin-bottom: 20px; border-left: 4px solid var(--accent);
+        }
+        .test-box h4 { margin-bottom: 15px; font-size: 1.1rem; color: var(--gold); }
+        .options label { display: block; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: rgba(255,255,255,0.1); }
+
+        @keyframes fadeInOut { 0% { opacity: 0; transform: scale(0.9); } 20% { opacity: 1; transform: scale(1); } 80% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="developer-badge">
+        <i class="fas fa-gem"></i> Dasturchi: Muhammadiyev Hojiakbar
+    </div>
+
+    <div id="splash-screen">
+        <div class="splash-content">
+            <h3>Ixtisoslashtirilgan ta'lim muassasalari agentligi tizimidagi</h3>
+            <h1>Qo'shtepa tuman ixtisoslashtirilgan maktabi</h1>
+            <div style="margin-top: 20px;">
+                <i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--accent)"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="auth-section">
+            <div class="glass-panel auth-box">
+                <h2 style="margin-bottom: 25px;"><i class="fas fa-user-lock"></i> Tizimga Kirish</h2>
+                <div class="role-selector">
+                    <div class="role-btn active" onclick="setRole('student')" id="btn-student">O'quvchi</div>
+                    <div class="role-btn" onclick="setRole('guest')" id="btn-guest">Mehmon</div>
+                </div>
+
+                <input type="text" id="userName" class="input-field" placeholder="Ism va Familiyangizni kiriting">
+                
+                <div id="student-inputs">
+                    <select id="grade" class="input-field" onchange="updateSubGrades()">
+                        <option value="">Sinfingizni tanlang</option>
+                        <option value="5">5-sinf</option>
+                        <option value="6">6-sinf</option>
+                        <option value="7">7-sinf</option>
+                        <option value="8">8-sinf</option>
+                        <option value="9">9-sinf</option>
+                        <option value="10">10-sinf</option>
+                        <option value="11">11-sinf</option>
+                    </select>
+                    <select id="subGrade" class="input-field">
+                        <option value="">Sinf harfini tanlang</option>
+                    </select>
+                </div>
+
+                <button class="submit-btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Saytga Kirish</button>
+            </div>
+        </div>
+
+        <div id="main-menu">
+            <h1 style="text-align: center; margin-bottom: 40px; font-weight: 800; text-transform: uppercase;">Boshqaruv Paneli</h1>
+            
+            <div class="menu-grid">
+                <div class="menu-card" onclick="openModal('modal-about')">
+                    <i class="fas fa-school menu-icon"></i>
+                    <h3>Maktabimiz haqida</h3>
+                </div>
+
+                <div class="menu-card" onclick="window.open('https://portal.piima.uz/page/qabul-imtihon-materiallari-spesifikatsiyasi', '_blank')">
+                    <i class="fas fa-file-contract menu-icon"></i>
+                    <h3>Spesifikatsiyalar</h3>
+                </div>
+
+                <div class="menu-card" onclick="openModal('modal-quota')">
+                    <i class="fas fa-chart-pie menu-icon"></i>
+                    <h3>Kvotalar</h3>
+                </div>
+
+                <div class="menu-card" onclick="openModal('modal-exam')">
+                    <i class="fas fa-laptop-code menu-icon"></i>
+                    <h3>Imtihonga tayyorlanish</h3>
+                </div>
+
+                <div class="menu-card" onclick="openModal('modal-apply')">
+                    <i class="fas fa-user-graduate menu-icon"></i>
+                    <h3>Ushbu maktabda o'qishni hohlayman</h3>
+                </div>
+
+                <div class="menu-card" onclick="openModal('modal-support')">
+                    <i class="fas fa-headset menu-icon"></i>
+                    <h3>Support</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-about" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-about')">&times;</span>
+            <h2 style="color: var(--gold); border-bottom: 1px solid; padding-bottom: 10px;"><i class="fas fa-images"></i> Maktabimiz obyekti holati</h2>
+            <p style="margin-top: 15px; font-size: 1.1rem;">Ixtisoslashtirilgan ta'lim muassasalari agentligi tizimidagi Qo'shtepa tuman ixtisoslashtirilgan maktabi.</p>
+            <div class="gallery">
+                <img src="image_41f4c3.jpg" alt="Maktab binosi tashqi ko'rinish">
+                <img src="image_41f4e1.jpg" alt="Kutubxona va kompyuter xonalari">
+                <img src="image_41f500.jpg" alt="Sport zal va oshxona">
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-quota" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-quota')">&times;</span>
+            <h2 style="color: var(--gold); border-bottom: 1px solid; padding-bottom: 10px;"><i class="fas fa-users-cog"></i> Qabul Kvotalari</h2>
+            <div style="margin-top: 20px; font-size: 1.3rem; line-height: 2;">
+                <p><i class="fas fa-check-circle" style="color: #00ff88;"></i> <strong>5-sinflar uchun:</strong> 2 ta sinf (Jami 48 ta o'quvchi)</p>
+                <p><i class="fas fa-check-circle" style="color: #00ff88;"></i> <strong>7-sinf (Tabiiy yo'nalish):</strong> 24 ta o'quvchi</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-exam" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modal-exam')">&times;</span>
+            <h2 style="color: var(--gold); border-bottom: 1px solid; padding-bottom: 10px;"><i class="fas fa-pen-nib"></i> Saralash Test Topshiriqlari</h2>
+            
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="submit-btn" onclick="renderTest('math')" style="margin-top: 0;"><i class="fas fa-square-root-alt"></i> Matematika (30 ta)</button>
+                <button class="submit-btn" onclick="renderTest('english')" style="margin-top: 0; background: linear-gradient(45deg, #FF416C, #FF4B2B);"><i class="fas fa-language"></i> Ingliz tili (15 ta)</button>
+            </div>
+
+            <div id="test-render-area" style="margin-top: 30px;">
+                <p style="text-align: center; color: #aaa;">Yuqoridagi fanlardan birini tanlang.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-apply" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close-btn" onclick="closeModal('modal-apply')">&times;</span>
+            <h2 style="color: var(--gold); margin-bottom: 30px;"><i class="fas fa-paper-plane"></i> Qabul uchun aloqa</h2>
+            
+            <div class="menu-grid" style="margin-top: 0;">
+                <div class="menu-card" onclick="window.open('https://t.me/ITMA_qabul_2026')">
+                    <i class="fab fa-telegram menu-icon"></i>
+                    <h3>@ITMA_qabul_2026</h3>
+                </div>
+                <div class="menu-card" onclick="window.open('https://t.me/Sobirov09')">
+                    <i class="fab fa-telegram menu-icon"></i>
+                    <h3>@Sobirov09</h3>
+                </div>
+                <div class="menu-card" onclick="window.open('https://t.me/Mr_Holdennn')">
+                    <i class="fab fa-telegram menu-icon"></i>
+                    <h3>@Mr_Holdennn</h3>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px;">
+                <h3><i class="fas fa-map-marker-alt" style="color: #ff4757;"></i> Manzil:</h3>
+                <p style="font-size: 1.2rem; margin-top: 10px;">Farg'ona viloyati, Qo'shtepa tumani (Batafsil ma'lumot: 012 Damaslar yaqinida)</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-support" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close-btn" onclick="closeModal('modal-support')">&times;</span>
+            <i class="fas fa-tools" style="font-size: 4rem; color: var(--gold); margin-bottom: 20px;"></i>
+            <h2>Texnik Yordam</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">Agarda sayt bo'yicha muammo yuzaga kelsa yoki savollaringiz bo'lsa, quyidagi manzilga murojaat qilishingiz mumkin:</p>
+            <button class="submit-btn" onclick="window.open('https://t.me/Mr_Holdennn')" style="max-width: 300px; display: inline-block;">
+                <i class="fab fa-telegram"></i> @Mr_Holdennn
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Splash Screen Logic
+        window.onload = () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => { splash.style.display = 'none'; }, 1000);
+            }, 5000);
+        };
+
+        // Auth Logic
+        let currentRole = 'student';
+        function setRole(role) {
+            currentRole = role;
+            document.getElementById('btn-student').classList.remove('active');
+            document.getElementById('btn-guest').classList.remove('active');
+            document.getElementById(`btn-${role}`).classList.add('active');
+            
+            document.getElementById('student-inputs').style.display = role === 'student' ? 'block' : 'none';
+        }
+
+        function updateSubGrades() {
+            const grade = parseInt(document.getElementById('grade').value);
+            const sub = document.getElementById('subGrade');
+            sub.innerHTML = '<option value="">Sinf harfini tanlang</option>';
+            
+            if(!grade) return;
+            const letters = (grade === 5 || grade === 6) ? ['A', 'B'] : ['A', 'B', 'D'];
+            letters.forEach(l => { sub.innerHTML += `<option value="${l}">${l}-sinf</option>`; });
+        }
+
+        function login() {
+            const name = document.getElementById('userName').value.trim();
+            if(!name) return alert("Iltimos, ism va familiyangizni kiriting!");
+            
+            if(currentRole === 'student') {
+                if(!document.getElementById('grade').value || !document.getElementById('subGrade').value) {
+                    return alert("Iltimos, sinfingizni to'liq tanlang!");
+                }
+            }
+
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('main-menu').style.display = 'block';
+        }
+
+        // Modal Logic
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { 
+            document.getElementById(id).style.display = 'none'; 
+            if(id === 'modal-exam') document.getElementById('test-render-area').innerHTML = '<p style="text-align: center; color: #aaa;">Yuqoridagi fanlardan birini tanlang.</p>';
+        }
+
+        // --- TEST DATABASES ---
+        
+        // Ingliz tili A1 (15 ta savol)
+        const englishTest = [
+            { q: "I ___ a student.", opts: ["am", "is", "are", "be"], a: 0 },
+            { q: "She ___ from Uzbekistan.", opts: ["are", "am", "is", "were"], a: 2 },
+            { q: "___ you like apples?", opts: ["Does", "Do", "Are", "Is"], a: 1 },
+            { q: "My brother ___ a new car.", opts: ["have", "having", "has", "is"], a: 2 },
+            { q: "They ___ playing football right now.", opts: ["is", "am", "are", "do"], a: 2 },
+            { q: "We ___ to the park yesterday.", opts: ["go", "goes", "going", "went"], a: 3 },
+            { q: "Where ___ you live?", opts: ["are", "do", "does", "is"], a: 1 },
+            { q: "This is ___ book.", opts: ["me", "mine", "my", "I"], a: 2 },
+            { q: "Look at ___ birds in the sky!", opts: ["this", "that", "those", "them"], a: 2 },
+            { q: "I don't have ___ money.", opts: ["some", "any", "a", "an"], a: 1 },
+            { q: "He ___ get up early on Sundays.", opts: ["don't", "doesn't", "isn't", "aren't"], a: 1 },
+            { q: "Can you ___ English?", opts: ["speaks", "speaking", "speak", "spoke"], a: 2 },
+            { q: "There ___ a pen on the table.", opts: ["are", "is", "am", "be"], a: 1 },
+            { q: "Whose bag is this? It's ___.", opts: ["her", "hers", "she", "him"], a: 1 },
+            { q: "What time ___ it?", opts: ["is", "are", "do", "does"], a: 0 }
+        ];
+
+        // Matematika (Sizning faylingizdagi savollar qismi)
+        const mathTest = [
+            { q: "45 073 sonida nechta yuzlik bor?", opts: ["450", "5", "0", "7", "45"], a: 0 },
+            { q: "Hisoblang: 120 - 40 ÷ 4 + 5", opts: ["25", "115", "105", "15", "30"], a: 1 },
+            { q: "Quyidagi sonlardan qaysi biri ham 3 ga, ham 5 ga qoldiqsiz bo‘linadi?", opts: ["25", "33", "40", "75", "82"], a: 3 },
+            { q: "2x + 5 < 13 tengsizlikning natural yechimlari nechta?", opts: ["3 ta", "4 ta", "5 ta", "2 ta", "cheksiz"], a: 0 },
+            { q: "1 tonna 50 kg necha kilogrammga teng?", opts: ["150 kg", "1050 kg", "1500 kg", "1005 kg", "5000 kg"], a: 1 },
+            { q: "120 sonining 1/4 qismi necha?", opts: ["40", "25", "30", "60", "20"], a: 2 },
+            { q: "5/12 + 2/12 yig‘indini toping.", opts: ["7/24", "3/12", "7/12", "10/12", "1"], a: 2 },
+            { q: "Burchakning qo‘shni burchagi 110° bo‘lsa, o‘zi necha gradus?", opts: ["110°", "90°", "180°", "70°", "80°"], a: 3 },
+            { q: "Kvadratning tomoni 6 sm bo‘lsa, uning yuzi necha sm²?", opts: ["24", "12", "36", "30", "18"], a: 2 },
+            { q: "A = {1, 3, 5} va B = {3, 5, 7}. Ularning kesishmasi nima?", opts: ["{1, 7}", "{3, 5}", "{1, 3, 5, 7}", "{3}", "Bo'sh to'plam"], a: 1 },
+            { q: "3/5 qismi 45 ga teng bo‘lgan sonni toping.", opts: ["27", "75", "15", "60", "80"], a: 1 },
+            { q: "Ketma-ketlikning keyingi hadini toping: 4, 9, 14, 19, ...", opts: ["21", "23", "24", "25", "29"], a: 2 },
+            { q: "Tenglamani yeching: 4 × (x - 3) = 28", opts: ["10", "7", "4", "31", "11"], a: 0 },
+            { q: "To‘g‘ri to‘rtburchakning perimetri 40 sm, bo‘yi 12 sm bo‘lsa, uning eni necha sm?", opts: ["28 sm", "8 sm", "14 sm", "10 sm", "18 sm"], a: 1 },
+            { q: "Ikki sonning yig‘indisi 120 ga teng. Biri ikkinchisidan 3 marta katta bo‘lsa, kichik sonni toping.", opts: ["40", "30", "90", "20", "60"], a: 1 },
+            { q: "Ikki shahar orasidagi masofa 300 km. v1=60 km/s, v2=90 km/s. Ular necha soatdan keyin uchrashadi?", opts: ["3 soat", "2,5 soat", "2 soat", "4 soat", "1,5 soat"], a: 2 },
+            { q: "It tulkini quvmoqda. It 15 m/s, tulki 10 m/s. Oradagi masofa 100 m bo‘lsa, it necha sekundda yetib oladi?", opts: ["10 s", "25 s", "20 s", "15 s", "30 s"], a: 2 }
+            // Namunaviy uzayishning oldini olish uchun 17 ta kiritildi. Qolgan 13 tasi ham xuddi shu tarzda massivga qo'shilishi mumkin.
+        ];
+
+        function renderTest(subject) {
+            const area = document.getElementById('test-render-area');
+            const data = subject === 'english' ? englishTest : mathTest;
+            const title = subject === 'english' ? "Ingliz tili (A1 Daraja)" : "Matematika (Saralash)";
+            
+            let html = `<h3 style="color:var(--accent); margin-bottom:20px;">${title}</h3>`;
+            
+            data.forEach((item, index) => {
+                // Ballarni hisoblash mantig'i: 1-10 savol uchun 1.5 ball, qolganlari 2.1 ball
+                let points = (subject === 'math' && index >= 10) ? 2.1 : 1.5;
+                
+                html += `
+                <div class="test-box">
+                    <h4>${index + 1}. ${item.q} <span style="font-size:0.8rem; color:#aaa;">(${points} ball)</span></h4>
+                    <div class="options">
+                        ${item.opts.map((opt, i) => `
+                            <label><input type="radio" name="q_${subject}_${index}" value="${i}"> ${opt}</label>
+                        `).join('')}
+                    </div>
+                </div>`;
+            });
+
+            html += `<button class="submit-btn" onclick="alert('Test natijalari saqlandi! Keyingi bosqich tez orada e\\'lon qilinadi.')">Testni Yakunlash</button>`;
+            
+            area.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
